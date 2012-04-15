@@ -3,7 +3,6 @@ window.audioPlayer = function() {
 	var availableMedia = [];
 	var availableUrl = [];
 	var menuArray = [];
-	var lastMenuStatus = false;
 	
 	/**
 	 * Function called with URL of file to be played.
@@ -36,12 +35,6 @@ window.audioPlayer = function() {
 	function getMediaList() {
 		var term = app.getCurrentTitle();
 		var requestUrl = app.baseURL + "/w/api.php";
-		
-		if (lastMenuStatus){
-			setMenuItemState('listen-sound',false, false);
-			console.log("disabling listen-in menu");
-			lastMenuStatus = false;
-		}	
 		
 		var ending = ".*\.ogg";
 		
@@ -101,13 +94,7 @@ window.audioPlayer = function() {
 				format: 'json'
 			},
 			success: function(data) {
-				
-				if(!lastMenuStatus){
-					setMenuItemState('listen-sound', true, false);
-					console.log("enabling listen-in menu");
-					lastMenuStatus = true;		
-				}	
-		
+
 				for(var id in data.query.pages){
 					for (var im in data.query.pages[id].imageinfo){		
 						
@@ -160,6 +147,10 @@ window.audioPlayer = function() {
 		menuArray = [];
 	}
 	
+	function isAvailable() {
+		return (availableUrl.length != 0); 
+	}
+	
 	
 	/**
 	 * plays file that is clicked in the menu
@@ -180,6 +171,7 @@ window.audioPlayer = function() {
 		playAudio: playAudio,
 		releaseMedia: releaseMedia,
 		getMediaList: getMediaList,
+		isAvailable: isAvailable,
 		createMenuArray: createMenuArray,
 		clearMenuArray: clearMenuArray
 	};

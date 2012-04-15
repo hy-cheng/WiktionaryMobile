@@ -141,6 +141,14 @@ function sharePage() {
 	);
 }
 
+function showAudio() {
+	if (audioPlayer.isAvailable()) {
+		audioPlayer.createMenuArray();
+	}else {
+		chrome.showNotification("audio unavailable for this page");
+	}
+}
+
 chrome.showNotification = function(text) {
 	// Using PhoneGap-Toast plugin for Android's lightweight "Toast" style notifications.
 	// https://github.com/m00sey/PhoneGap-Toast
@@ -160,7 +168,7 @@ function updateMenuState() {
 		'go-forward': function() { chrome.goForward(); },
 		'select-text': function() { selectText(); },
 		'view-settings': function() { appSettings.showSettings(); },
-		'listen-sound': function() { audioPlayer.createMenuArray(); },
+		'listen-sound': function() { showAudio(); },
         'word-of-the-day': function() { chrome.loadWordoftheDay(); },
 	};
 	$('#appMenu command').each(function() {
